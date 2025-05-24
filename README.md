@@ -1,2 +1,19 @@
-# My-Blockchain-Security-Audits
-Welcome to the repository of my security research findings and proof-of-concepts (PoCs) for solidity smart contracts and blockchain vulnerabilities.  This repository contains my findings and PoCs for security vulnerabilities in smart contracts and blockchain protocols. Follow along for updates and insights into the world of blockchain security!
+👋 Hi, I’m Yahaya Salisu
+
+🛡️ A Smart Contract Auditor
+🧠 My focus Areas
+DeFi protocols (Lending, Borrowing, Staking)
+ERC-20, ERC-721, and ERC-1155 tokens
+Smart contract security vulnerabilities
+Manual auditing and automated tools (Slither, Foundry, Mythril)
+🛠️ Tools & Frameworks
+Slither for static analysis
+Foundry for property-based fuzz testing
+Mythril for symbolic execution
+Remix & Hardhat for contract interaction and testing
+📂 Example Work
+Audit Report 1 — Found Access control vulnerability in lending protocol
+Audit Lab — Test environments and POCs for exploits
+📫 Contact
+WhatsApp: +2348109440946
+GitHub: @YahayaSalisu1
