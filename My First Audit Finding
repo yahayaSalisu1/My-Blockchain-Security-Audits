@@ -1,9 +1,20 @@
 I found the Missing Return Value Check in Compound-Finance Protocol
 
-The transfer function doesn't check return value in compound protocol 
+Silent Failure on Insufficient Balance
 
+**Severity:** Medium  
+**Target:** `cUSDC` (Compound’s USDC cToken)  
 
-PoC
+##  Bug Summary  
+- **Issue:** `cUSDC.transfer()` returns `false` on failure but **does not revert**, causing silent failures.  
+- **Risk:** Contracts relying on `transfer()` may incorrectly assume success, leading to broken integrations.  
+- **Affected Function:** `CErc20.transfer()` in Compound Protocol. 
+
+ 
+
+## 🔍 Proof of Concept (PoC) 
+ 
+### Test Code (Foundry)
 
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
@@ -40,6 +51,8 @@ assertEq(userBalance, 0, "Transfer succeeded silently, missing return value!");
 }
 // forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL -vvvv
 }
+
+
 
 
 Result after run test on foundry 
