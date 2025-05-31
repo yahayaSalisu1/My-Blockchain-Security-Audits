@@ -1,1 +1,27 @@
-I found the Missing Return Value Check in Compound-Finance Protocol 
+I found the Missing Return Value Check in Compound-Finance Protocol
+
+the transfer function doesn't check return value in compound 
+
+
+$ forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL
+[⠢] Compiling...
+$ forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL
+[⠢] Compiling...
+[⠢] Compiling...
+[⠆] Compiling 22 files with Solc 0.8.24
+[⠰] Solc 0.8.24 finished in 6.21s
+Compiler run successful!
+
+Ran 1 test for Test/missingReturn.t.sol:missingReturn
+[PASS] test_MissingReturn() (gas: 222147)
+Compiler run successful!
+
+Ran 1 test for Test/missingReturn.t.sol:missingReturn
+[PASS] test_MissingReturn() (gas: 222147)
+Ran 1 test for Test/missingReturn.t.sol:missingReturn
+[PASS] test_MissingReturn() (gas: 222147)
+[PASS] test_MissingReturn() (gas: 222147)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 3.86s (8.34ms CPU time)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 3.86s (8.34ms CPU time)
+
+Ran 1 test suite in 5.31s (3.86s CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
