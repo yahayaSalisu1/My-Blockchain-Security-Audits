@@ -1,10 +1,8 @@
 I found the Missing Return Value Check in Compound-Finance Protocol
 
-the transfer function doesn't check return value in compound 
+The transfer function doesn't check return value in compound protocol 
 
 
-$ forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL
-[⠢] Compiling...
 $ forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL
 [⠢] Compiling...
 [⠢] Compiling...
