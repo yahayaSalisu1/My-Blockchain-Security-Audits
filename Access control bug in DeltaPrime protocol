@@ -1,5 +1,6 @@
 I found the potential bug that could lead to contract hijacking in DeltaPrime protocol 
 
+
 Target
 https://github.com/DeltaPrimeLabs/deltaprime-primeloans
 
