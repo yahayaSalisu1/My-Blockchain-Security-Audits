@@ -19,8 +19,6 @@ Vulnerability Code:
 https://github.com/DeltaPrimeLabs/deltaprime-primeloans/blob/dev/main/contracts/facets/SmartLoanViewFacet.sol#L42
 
 
-
-
 Proof of concept (POC):
 
 // SPDX-License-Identifier: UNLICENSED
