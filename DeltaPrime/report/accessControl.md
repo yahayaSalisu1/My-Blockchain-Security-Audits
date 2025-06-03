@@ -21,6 +21,9 @@ https://github.com/DeltaPrimeLabs/deltaprime-primeloans/blob/dev/main/contracts/
 
 Proof of concept (POC):
 
+![Image](https://github.com/user-attachments/assets/7d82a4e7-7f5e-4010-857f-e7add392f858)
+
+
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
@@ -58,11 +61,6 @@ Traces:
     │   └─ ← ()
     └─ ← ()
 Test result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.28s
-
-
-
-![Image](https://github.com/user-attachments/assets/7d82a4e7-7f5e-4010-857f-e7add392f858)
-
 
 ![Image](https://github.com/user-attachments/assets/81e34efc-fec6-4856-a7a7-a7e811c3effd)
 
