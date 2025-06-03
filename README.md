@@ -25,3 +25,5 @@ Telegram: @YahayaSalisuBabs
 ⚠️ Fun Fact
 I love exploiting bugs more than writing code — but only ethically!
 
+![WhatsApp Image 2025-06-02 at 11 33 05_882c4d77](https://github.com/user-attachments/assets/2630845f-2e79-450d-804f-dede9051a7d2)
+
