@@ -1,4 +1,4 @@
-I found the Missing Return Value Check in Compound-Finance Protocol
+**I found the Missing Return Value Check in Compound-Finance Protocol**
 
 Silent Failure on Insufficient Balance
 
@@ -12,7 +12,7 @@ Silent Failure on Insufficient Balance
 
  
 
-'''## 🔍 Proof of Concept (PoC) 
+## 🔍 Proof of Concept (PoC) 
  
 ### Test Code (Foundry)
 
@@ -50,7 +50,7 @@ emit log_named_uint("User Balance After Transfer", userBalance);
 assertEq(userBalance, 0, "Transfer succeeded silently, missing return value!");
 }
 // forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL -vvvv
-}'''
+}
 
 
 
