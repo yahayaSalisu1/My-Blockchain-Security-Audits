@@ -17,7 +17,7 @@ Silent Failure on Insufficient Balance
  
 ```
 ## 🔍 Proof of Concept (PoC) 
- ```
+
 ### Test Code (Foundry)
 
 // SPDX-License-Identifier: MIT
