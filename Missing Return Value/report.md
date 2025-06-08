@@ -15,9 +15,9 @@ Silent Failure on Insufficient Balance
 - **Affected Function:** `CErc20.transfer()` in Compound Protocol. 
 
  
-```
-## 🔍 Proof of Concept (PoC) 
 
+## 🔍 Proof of Concept (PoC) 
+```
 ### Test Code (Foundry)
 
 // SPDX-License-Identifier: MIT
@@ -53,10 +53,11 @@ uint256 userBalance = cusdc.balanceOf(User);
 emit log_named_uint("User Balance After Transfer", userBalance);
 assertEq(userBalance, 0, "Transfer succeeded silently, missing return value!");
 }
-}
+}```
 
+''''
 // forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL -vvvv
-
+''''
 
 ___
 
