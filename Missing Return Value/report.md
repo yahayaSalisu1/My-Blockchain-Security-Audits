@@ -7,6 +7,8 @@ Silent Failure on Insufficient Balance
 **Severity:** Medium  
 **Target:** `cUSDC` (Compound’s USDC cToken)  
 
+---
+
 ##  Bug Summary  
 - **Issue:** `cUSDC.transfer()` returns `false` on failure but **does not revert**, causing silent failures.  
 - **Risk:** Contracts relying on `transfer()` may incorrectly assume success, leading to broken integrations.  
@@ -52,7 +54,7 @@ emit log_named_uint("User Balance After Transfer", userBalance);
 assertEq(userBalance, 0, "Transfer succeeded silently, missing return value!");
 }
 }
----
+
 // forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL -vvvv
 
 
