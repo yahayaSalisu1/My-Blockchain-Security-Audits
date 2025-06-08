@@ -15,9 +15,9 @@ Silent Failure on Insufficient Balance
 - **Affected Function:** `CErc20.transfer()` in Compound Protocol. 
 
  
-
+```
 ## 🔍 Proof of Concept (PoC) 
- 
+ ```
 ### Test Code (Foundry)
 
 // SPDX-License-Identifier: MIT
