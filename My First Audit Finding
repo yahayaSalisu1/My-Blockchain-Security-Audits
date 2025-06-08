@@ -1,5 +1,7 @@
 ***I found the Missing Return Value Check in Compound-Finance Protocol***
 
+___
+
 Silent Failure on Insufficient Balance
 
 **Severity:** Medium  
