@@ -18,7 +18,7 @@ Silent Failure on Insufficient Balance
  
 ### Test Code (Foundry)
 
-'''// SPDX-License-Identifier: MIT
+###// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
@@ -52,7 +52,7 @@ emit log_named_uint("User Balance After Transfer", userBalance);
 assertEq(userBalance, 0, "Transfer succeeded silently, missing return value!");
 }
 // forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL -vvvv
-}'''
+}###
 
 
 
