@@ -17,9 +17,10 @@ Silent Failure on Insufficient Balance
  
 
 ## 🔍 Proof of Concept (PoC) 
-```
+
 ### Test Code (Foundry)
 
+```
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -53,11 +54,11 @@ uint256 userBalance = cusdc.balanceOf(User);
 emit log_named_uint("User Balance After Transfer", userBalance);
 assertEq(userBalance, 0, "Transfer succeeded silently, missing return value!");
 }
-}```
+}
+```
 
-''''
-// forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL -vvvv
-''''
+
+''''// forge test Test/missingReturn.t.sol --rpc-url MAINNET_RPC_URL -vvvv''''
 
 ___
 
