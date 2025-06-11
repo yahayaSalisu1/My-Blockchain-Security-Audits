@@ -1,3 +1,4 @@
+```
 Protocol: FAsset Protocol
 Contract: CoreRouter.sol#145
 Function: borrow(_amount, _token);
@@ -13,3 +14,4 @@ borrow(_amount, _token);
     ├─ LTokenInterface(_lToken).borrowIndex();
     ├─ enterMarkets(_lToken);
     └─ LErc20Interface(_lToken).borrow(_amount) == 0, "Borrow failed");
+```
