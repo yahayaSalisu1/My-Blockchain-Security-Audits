@@ -59,14 +59,14 @@ require(_amount != 0, "Zero borrow amount");
         (uint256 borrowed, uint256 collateral) = lendStorage.getHypotheticalAccountLiquidityCollateral(msg.sender, LToken(payable(_lToken)), 0, _amount);
         
         // checking for user's market state and see if user has borrowed before 
-        LendStorage.BorrowMarketState memory currentBorrow = lendStorage.getBorrowBalance(msg.sender, _lToken);
+        LendStorage.BorrowMarketState memory currentBorrow = @audit-gas --> lendStorage.getBorrowBalance(msg.sender, _lToken);
         
         // if user has borrowed before, it calculates the borrowAmount here (preBorrowAmount)
-        uint256 borrowAmount = currentBorrow.borrowIndex != 0 ? ((borrowed * LTokenInterface(_lToken).borrowIndex()) / currentBorrow.borrowIndex): 0;
+        uint256 borrowAmount = currentBorrow.borrowIndex != 0 ? ((borrowed * @audit-gas --> LTokenInterface(_lToken).borrowIndex()) / currentBorrow.borrowIndex): 0;
 
         // require condition to prevent user from Over-Borrowing
 
- @audit--> The protocol check preBorrowAmount (borrowAmount) instead of postBorrowAmount (borrowed) this will allow any user to Over-Borrowing beyond the collateral limit
+ @audit-bug --> The protocol check preBorrowAmount (borrowAmount) instead of postBorrowAmount (borrowed) this will allow any user to Over-Borrowing beyond the collateral limit
 
   require(collateral >= borrowAmount, "Insufficient collateral");
   
@@ -82,11 +82,11 @@ require(_amount != 0, "Zero borrow amount");
         
         // Update user balance if he has borrowed before 
         if (currentBorrow.borrowIndex != 0) {
-        uint256 _newPrinciple =                (currentBorrow.amount * LTokenInterface(_lToken).borrowIndex()) / currentBorrow.borrowIndex;
-            lendStorage.updateBorrowBalance(msg.sender, _lToken, _newPrinciple + _amount, LTokenInterface(_lToken).borrowIndex()            );        } else {
+        uint256 _newPrinciple =                (currentBorrow.amount * @audit-gas --> LTokenInterface(_lToken).borrowIndex()) / currentBorrow.borrowIndex;
+            @audit-gas --> lendStorage.updateBorrowBalance(msg.sender, _lToken, _newPrinciple + _amount, @audit-gas --> LTokenInterface(_lToken).borrowIndex()            );        } else {
             
          // update user balance if he hasn't borrowed before       
-            lendStorage.updateBorrowBalance(msg.sender, _lToken, _amount, LTokenInterface(_lToken).borrowIndex());
+            @audit-gas --> lendStorage.updateBorrowBalance(msg.sender, _lToken, _amount, @audit-gas --> LTokenInterface(_lToken).borrowIndex());
             }
             // add lToken to the user borrowed assets list
         lendStorage.addUserBorrowedAsset(msg.sender, _lToken);
