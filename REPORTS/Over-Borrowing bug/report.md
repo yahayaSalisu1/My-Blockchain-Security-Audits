@@ -5,6 +5,7 @@ Link: https:sherlock-audit-report
 
 ---
        ## **FUNCTION CALL FLOW:**
+
 ``
 borrow(_amount, _token);    
  ├─ lendStorage.underlyingTolToken(_token);    
