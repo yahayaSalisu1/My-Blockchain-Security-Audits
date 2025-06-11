@@ -1,1 +1,15 @@
+Protocol: FAsset Protocol
+Contract: CoreRouter.sol#145
+Function: borrow(_amount, _token);
+Link: https://github.com/sherlock-audit/2025-05-lend-audit-contest-judging/blob/main/018.md
 
+    FUNCTION CALL FLOW 
+
+borrow(_amount, _token);
+    ├─ lendStorage.underlyingTolToken(_token);
+    ├─ LTokenInterface(_lToken).accrueInterest();
+    ├─             lendStorage.getHypotheticalAccountLiquidityCollateral(msg.sender, LToken(payable(_lToken)), 0, _amount);
+    ├─ lendStorage.getBorrowBalance(msg.sender, _lToken);
+    ├─ LTokenInterface(_lToken).borrowIndex();
+    ├─ enterMarkets(_lToken);
+    └─ LErc20Interface(_lToken).borrow(_amount) == 0, "Borrow failed");
