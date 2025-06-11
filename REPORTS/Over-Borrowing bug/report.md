@@ -4,24 +4,25 @@ Function: borrow(_amount, _token);
 Link: https:sherlock-audit-report
 
 
-        **FUNCTION CALL FLOW:**
+        ***FUNCTION CALL FLOW:***
 borrow(_amount, _token);    
- ├─ lendStorage.underlyingTolToken(_token);    
- ├─ LTokenInterface(_lToken).accrueInterest();    
- ├─             lendStorage.getHypotheticalAccountLiquidityCollateral(msg.sender, LToken(payable(_lToken)), 0, _amount);    
- ├─ lendStorage.getBorrowBalance(msg.sender, _lToken);    
- ├─ LTokenInterface(_lToken).borrowIndex();    
- ├─ enterMarkets(_lToken);    
- └─ LErc20Interface(_lToken).borrow(_amount) == 0, "Borrow failed");
+  ├─ lendStorage.underlyingTolToken(_token);    
+  ├─ LTokenInterface(_lToken).accrueInterest();    
+  ├─             lendStorage.getHypotheticalAccountLiquidityCollateral(msg.sender, LToken(payable(_lToken)), 0, _amount);    
+  ├─ lendStorage.getBorrowBalance(msg.sender, _lToken);    
+  ├─ LTokenInterface(_lToken).borrowIndex();    
+  ├─ enterMarkets(_lToken);    
+  └─ LErc20Interface(_lToken).borrow(_amount) == 0, "Borrow failed");
 
 
-         **FUNCTION DEPENDENCIES:**               CoreRouter.sol    
- ├─ lendStorage.sol    
- ├─ LTokenInterface.sol            
- └─ LErc20Interface.sol
+         ***FUNCTION DEPENDENCIES:***
+      CoreRouter.sol    
+        ├─ lendStorage.sol    
+        ├─ LTokenInterface.sol            
+        └─ LErc20Interface.sol
 
 
-         **FUNCTION LOGIC SUMMARY:**   
+         ***FUNCTION LOGIC SUMMARY:***  
 A. This function is used to borrow asset from the FAsset protocol, B. The function will first check the lToken address using underlying asset ( token ), after function got lToken address,
 C. It will accrueInterest of the lToken via LTokenInterface contract, after accumulate the interest
 D. The function will calculate the hypothetical account liquidity collateral ( which is current borrow + _amount ) and see if the collateral is sufficient for this post-borrow debt.
@@ -35,7 +36,7 @@ K. Lastly, the function with add this lToken to the user borrowed asset list in 
      
  
      
- ## **FULL FUNCTION WITH INLINE COMMENTS:**
+ ***FULL FUNCTION WITH INLINE COMMENTS:***
 ```function borrow(uint256 _amount, address _token) external {        require(_amount != 0, "Zero borrow amount");
     
     // Looking for lToken address using underlying token
