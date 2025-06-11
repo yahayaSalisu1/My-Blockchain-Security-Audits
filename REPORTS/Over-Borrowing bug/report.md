@@ -22,7 +22,8 @@ borrow(_amount, _token);
       CoreRouter.sol    
         ├─ lendStorage.sol    
         ├─ LTokenInterface.sol            
-        └─ LErc20Interface.sol```
+        └─ LErc20Interface.sol
+```
 
 
          ***FUNCTION LOGIC SUMMARY:***  
