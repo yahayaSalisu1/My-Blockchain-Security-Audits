@@ -1,10 +1,13 @@
 Protocol: Lend Protocol
+
 Contract: CoreRouter.sol#145
-Function: borrow(_amount, _token);
+
+Function: borrow(_amount, _token)
+
 Link: https:sherlock-audit-report
 
 
-        ***FUNCTION CALL FLOW:***
+       ***FUNCTION CALL FLOW:***
 borrow(_amount, _token);    
   ├─ lendStorage.underlyingTolToken(_token);    
   ├─ LTokenInterface(_lToken).accrueInterest();    
@@ -15,7 +18,7 @@ borrow(_amount, _token);
   └─ LErc20Interface(_lToken).borrow(_amount) == 0, "Borrow failed");
 
 
-         ***FUNCTION DEPENDENCIES:***
+         FUNCTION DEPENDENCIES:
       CoreRouter.sol    
         ├─ lendStorage.sol    
         ├─ LTokenInterface.sol            
