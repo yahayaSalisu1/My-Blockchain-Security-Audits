@@ -45,13 +45,15 @@ K. Lastly, the function with add this lToken to the user borrowed asset list in 
      
  ***FULL FUNCTION WITH INLINE COMMENTS:***
 ```
-function borrow(uint256 _amount, address _token) external {        require(_amount != 0, "Zero borrow amount");
+function borrow(uint256 _amount, address _token) external {
+
+// checking for 0 address
+require(_amount != 0, "Zero borrow amount");
     
     // Looking for lToken address using underlying token
         address _lToken = lendStorage.underlyingTolToken(_token);
         
-        // accruedInterest of the lToken entirely 
-        LTokenInterface(_lToken).accrueInterest();
+        // accruedInterest of the lToken entirely       LTokenInterface(_lToken).accrueInterest();
         
         // calculate the hypothetical balance (postBorrowAmount) which is currentBorrow + _amount and calculate the collateral 
         (uint256 borrowed, uint256 collateral) = lendStorage.getHypotheticalAccountLiquidityCollateral(msg.sender, LToken(payable(_lToken)), 0, _amount);
@@ -59,10 +61,13 @@ function borrow(uint256 _amount, address _token) external {        require(_amou
         // checking for user's market state and see if user has borrowed before 
         LendStorage.BorrowMarketState memory currentBorrow = lendStorage.getBorrowBalance(msg.sender, _lToken);
         
-        // if user has borrowed before, it calculates the borrowAmount here (pre-borrow debt)
-        uint256 borrowAmount = currentBorrow.borrowIndex != 0            ? ((borrowed * LTokenInterface(_lToken).borrowIndex()) / currentBorrow.borrowIndex)            : 0;
+        // if user has borrowed before, it calculates the borrowAmount here (preBorrowAmount)
+        uint256 borrowAmount = currentBorrow.borrowIndex != 0 ? ((borrowed * LTokenInterface(_lToken).borrowIndex()) / currentBorrow.borrowIndex): 0;
+
         // require condition to prevent user from Over-Borrowing
-  @audit--> The protocol check preBorrowAmount (borrowAmount) instead of postBorrowAmount (borrowed) this will allow any user to Over-Borrowing beyond the collateral limit
+
+ @audit--> The protocol check preBorrowAmount (borrowAmount) instead of postBorrowAmount (borrowed) this will allow any user to Over-Borrowing beyond the collateral limit
+
   require(collateral >= borrowAmount, "Insufficient collateral");
   
   // Enter the Compound market if lToken is not there already
