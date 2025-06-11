@@ -1,6 +1,7 @@
 Protocol: Lend Protocol
 Contract: CoreRouter.sol#145
-Function: borrow(_amount, _token);Link: https:sherlock-audit-report
+Function: borrow(_amount, _token);
+Link: https:sherlock-audit-report
 
 
        ## **FUNCTION CALL FLOW:**
@@ -16,10 +17,10 @@ borrow(_amount, _token);
 `` 
 
 
-       ## **FUNCTION DEPENDENCIES:**      CoreRouter.sol    
-      ├─ lendStorage.sol    
-      ├─ LTokenInterface.sol            
-      └─ LErc20Interface.sol
+       ## **FUNCTION DEPENDENCIES:**               CoreRouter.sol    
+ ├─ lendStorage.sol    
+ ├─ LTokenInterface.sol            
+ └─ LErc20Interface.sol
 
 
       ## **FUNCTION LOGIC SUMMARY:**   
