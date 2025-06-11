@@ -12,8 +12,8 @@ Link: https:sherlock-audit-report
 borrow(_amount, _token);    
   ├─ lendStorage.underlyingTolToken(_token);    
   ├─ LTokenInterface(_lToken).accrueInterest();    
-  ├─             lendStorage.getHypotheticalAccountLiquidityCollateral(msg.sender, LToken(payable(_lToken)), 0, _amount);    
-  ├─lendStorage.getBorrowBalance(msg.sender, _lToken);    
+  ├─ lendStorage.getHypotheticalAccountLiquidityCollateral(msg.sender, LToken(payable(_lToken)), 0, _amount);    
+  ├─ lendStorage.getBorrowBalance(msg.sender, _lToken);    
   ├─ LTokenInterface(_lToken).borrowIndex();    
   ├─ enterMarkets(_lToken);    
   └─ LErc20Interface(_lToken).borrow(_amount) == 0, "Borrow failed");
@@ -44,7 +44,8 @@ K. Lastly, the function with add this lToken to the user borrowed asset list in 
  ___
      
  ***FULL FUNCTION WITH INLINE COMMENTS:***
-```function borrow(uint256 _amount, address _token) external {        require(_amount != 0, "Zero borrow amount");
+```
+function borrow(uint256 _amount, address _token) external {        require(_amount != 0, "Zero borrow amount");
     
     // Looking for lToken address using underlying token
         address _lToken = lendStorage.underlyingTolToken(_token);
