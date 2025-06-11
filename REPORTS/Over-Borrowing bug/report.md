@@ -1,3 +1,4 @@
+```
 Protocol: Lend Protocol
 
 Contract: CoreRouter.sol#145
@@ -7,7 +8,7 @@ Function: borrow(_amount, _token)
 Link: https:sherlock-audit-report
 
 
-```       FUNCTION CALL FLOW:
+       FUNCTION CALL FLOW:
 borrow(_amount, _token);    
   ├─ lendStorage.underlyingTolToken(_token);    
   ├─ LTokenInterface(_lToken).accrueInterest();    
@@ -26,7 +27,7 @@ borrow(_amount, _token);
 ```
 ___
 
-         FUNCTION LOGIC SUMMARY:  
+```         FUNCTION LOGIC SUMMARY:  
 A. This function is used to borrow asset from the FAsset protocol, B. The function will first check the lToken address using underlying asset ( token ), after function got lToken address,
 C. It will accrueInterest of the lToken via LTokenInterface contract, after accumulate the interest
 D. The function will calculate the hypothetical account liquidity collateral ( which is current borrow + _amount ) and see if the collateral is sufficient for this post-borrow debt.
@@ -37,6 +38,7 @@ H. The borrow will be executed via LTokenInterface contract and the amount will 
 I. The function will distribute borrower lend via lendStorage contract.
 J. The function will then update record/states whether borrower has a current borrow balance or not.
 K. Lastly, the function with add this lToken to the user borrowed asset list in order to track all the assets that user borrowed and emet the event.
+```
      
  ___
      
