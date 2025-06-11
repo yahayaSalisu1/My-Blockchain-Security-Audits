@@ -1,4 +1,4 @@
-```
+```solidity
 Protocol: Lend Protocol
 
 Contract: CoreRouter.sol#145
@@ -43,7 +43,7 @@ K. Lastly, the function with add this lToken to the user borrowed asset list in 
      
  ___
  
-```    
+```solidity    
    FULL FUNCTION WITH INLINE COMMENTS:
 function borrow(uint256 _amount, address _token) external {
 
