@@ -27,7 +27,8 @@ borrow(_amount, _token);
 ```
 ___
 
-```         FUNCTION LOGIC SUMMARY:  
+```         
+        FUNCTION LOGIC SUMMARY:  
 A. This function is used to borrow asset from the FAsset protocol, B. The function will first check the lToken address using underlying asset ( token ), after function got lToken address,
 C. It will accrueInterest of the lToken via LTokenInterface contract, after accumulate the interest
 D. The function will calculate the hypothetical account liquidity collateral ( which is current borrow + _amount ) and see if the collateral is sufficient for this post-borrow debt.
