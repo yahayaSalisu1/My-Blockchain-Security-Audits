@@ -12,7 +12,7 @@ borrow(_amount, _token);
   ├─ lendStorage.underlyingTolToken(_token);    
   ├─ LTokenInterface(_lToken).accrueInterest();    
   ├─             lendStorage.getHypotheticalAccountLiquidityCollateral(msg.sender, LToken(payable(_lToken)), 0, _amount);    
-  ├─ lendStorage.getBorrowBalance(msg.sender, _lToken);    
+  ├─lendStorage.getBorrowBalance(msg.sender, _lToken);    
   ├─ LTokenInterface(_lToken).borrowIndex();    
   ├─ enterMarkets(_lToken);    
   └─ LErc20Interface(_lToken).borrow(_amount) == 0, "Borrow failed");
@@ -24,9 +24,9 @@ borrow(_amount, _token);
         ├─ LTokenInterface.sol            
         └─ LErc20Interface.sol
 ```
+___
 
-
-         ***FUNCTION LOGIC SUMMARY:***  
+         FUNCTION LOGIC SUMMARY:  
 A. This function is used to borrow asset from the FAsset protocol, B. The function will first check the lToken address using underlying asset ( token ), after function got lToken address,
 C. It will accrueInterest of the lToken via LTokenInterface contract, after accumulate the interest
 D. The function will calculate the hypothetical account liquidity collateral ( which is current borrow + _amount ) and see if the collateral is sufficient for this post-borrow debt.
@@ -38,7 +38,7 @@ I. The function will distribute borrower lend via lendStorage contract.
 J. The function will then update record/states whether borrower has a current borrow balance or not.
 K. Lastly, the function with add this lToken to the user borrowed asset list in order to track all the assets that user borrowed and emet the event.
      
- 
+ ___
      
  ***FULL FUNCTION WITH INLINE COMMENTS:***
 ```function borrow(uint256 _amount, address _token) external {        require(_amount != 0, "Zero borrow amount");
