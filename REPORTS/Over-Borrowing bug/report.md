@@ -7,7 +7,7 @@ Function: borrow(_amount, _token)
 Link: https:sherlock-audit-report
 
 
-       FUNCTION CALL FLOW:
+```       FUNCTION CALL FLOW:
 borrow(_amount, _token);    
   ├─ lendStorage.underlyingTolToken(_token);    
   ├─ LTokenInterface(_lToken).accrueInterest();    
@@ -22,7 +22,7 @@ borrow(_amount, _token);
       CoreRouter.sol    
         ├─ lendStorage.sol    
         ├─ LTokenInterface.sol            
-        └─ LErc20Interface.sol
+        └─ LErc20Interface.sol```
 
 
          ***FUNCTION LOGIC SUMMARY:***  
