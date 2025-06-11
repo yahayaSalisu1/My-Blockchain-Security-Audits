@@ -3,10 +3,8 @@ Contract: CoreRouter.sol#145
 Function: borrow(_amount, _token);
 Link: https:sherlock-audit-report
 
----
-       ## **FUNCTION CALL FLOW:**
 
-``
+       ## **FUNCTION CALL FLOW:**
 borrow(_amount, _token);    
  ├─ lendStorage.underlyingTolToken(_token);    
  ├─ LTokenInterface(_lToken).accrueInterest();    
@@ -15,8 +13,7 @@ borrow(_amount, _token);
  ├─ LTokenInterface(_lToken).borrowIndex();    
  ├─ enterMarkets(_lToken);    
  └─ LErc20Interface(_lToken).borrow(_amount) == 0, "Borrow failed");
-`` 
----
+
 
        ## **FUNCTION DEPENDENCIES:**               CoreRouter.sol    
  ├─ lendStorage.sol    
@@ -36,7 +33,7 @@ I. The function will distribute borrower lend via lendStorage contract.
 J. The function will then update record/states whether borrower has a current borrow balance or not.
 K. Lastly, the function with add this lToken to the user borrowed asset list in order to track all the assets that user borrowed and emet the event.
      
- ---  
+ 
      
  ## **FULL FUNCTION WITH INLINE COMMENTS:**
 ```function borrow(uint256 _amount, address _token) external {        require(_amount != 0, "Zero borrow amount");
