@@ -3,7 +3,16 @@
 _Bug Severity:_ Critical 
 
 _Target:_ https://sonicscan.org/address/0x435Ab368F5fCCcc71554f4A8ac5F5b922bC4Dc06?utm_source=immunefi#code#F10#L43-53
+
+
+
+
+
+**Summary:**
+
 Actions.sol uses as e.g middleware in silo protocol, meaning if a user calls deposit/withdraw from silo.sol, the silo.sol will make an external call to Actions.sol, this contract handles multiple tasks such as, calling accrueInterest, turn on/off reentrancy protection, calls hook receiver, gets shareToken and asset addresses, and also the contract interacts with vaults that change the storage, meaning if an attacker can get access or hijack the Actions.sol via calling initialize with malicious siloConfig, fake hook receiver and Change shareToken and asset addresses, all the protocol's transactions will be under the attacker's malicious actions, and could give the Attacker full control over the user's funds
+
+
 
 ```solidity
 // Actions.sol
@@ -23,6 +32,8 @@ Actions.sol uses as e.g middleware in silo protocol, meaning if a user calls dep
         return configData.hookReceiver;
     }
 ```
+
+
 - After deep reviews, i found out that the silo admins forgot to call initialize in Actions.sol contract, the contract is Unprotected everyone can call it and become the owner of it.
 
 
