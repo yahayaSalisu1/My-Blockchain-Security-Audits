@@ -10,7 +10,22 @@ _Target:_ https://sonicscan.org/address/0x435Ab368F5fCCcc71554f4A8ac5F5b922bC4Dc
 
 **Summary:**
 
-Actions.sol uses as e.g middleware in silo protocol, meaning if a user calls deposit/withdraw from silo.sol, the silo.sol will make an external call to Actions.sol, this contract handles multiple tasks such as, calling accrueInterest, turn on/off reentrancy protection, calls hook receiver, gets shareToken and asset addresses, and also the contract interacts with vaults that change the storage, meaning if an attacker can get access or hijack the Actions.sol via calling initialize with malicious siloConfig, fake hook receiver and Change shareToken and asset addresses, all the protocol's transactions will be under the attacker's malicious actions, and could give the Attacker full control over the user's funds
+The Actions.sol contract acts as a middleware within the Silo Protocol. When a user interacts with core functions such as deposit or withdraw, the main protocol delegates responsibilities to this contract. This includes critical tasks such as:
+
+Calling accrueInterest()
+
+Managing reentrancy protection
+
+Interacting with vaults that handle funds
+
+Fetching shareToken and asset addresses
+
+Managing the hookReceiver
+
+
+However, the initialize() function in Actions.sol is unprotected. It is publicly callable and lacks any access control (e.g., onlyOwner or initializer modifiers). This allows any attacker to hijack the contract, configure it with a malicious SiloConfig, and gain full control over the logic execution of the entire protocol.
+
+Furthermore, the contract appears to have never been initialized, which makes this attack feasible on mainnet.
 
 
 
@@ -34,7 +49,6 @@ Actions.sol uses as e.g middleware in silo protocol, meaning if a user calls dep
 ```
 
 
-- After deep reviews, i found out that the silo admins forgot to call initialize in Actions.sol contract, the contract is Unprotected everyone can call it and become the owner of it.
 
 
 
@@ -42,10 +56,13 @@ Actions.sol uses as e.g middleware in silo protocol, meaning if a user calls dep
 
 **Impact:**
 
-- Attacker could hijack the Actions.sol contract via calling initialize function and change the siloConfig, hook receiver, shareToken and asset addresses all to the malicious ones.
-- Users' funds will be under attacker's control
-- And the attacker could drain the protocol's funds via contract without reentrancy protection
-- Once the attacker became the owner of Actions.sol, the protocol admins can not return the contract back from attacer.
+- Attacker can fully hijack the Actions.sol contract by calling initialize() with malicious config.
+
+- The attacker can point hookReceiver, shareToken, and other vault interactions to addresses under their control.
+
+- This allows arbitrary logic injection into protocol flows, including vault draining and disabling of reentrancy protection.
+
+- Once hijacked, the protocol team cannot reclaim the contract, leading to permanent loss of control and user funds.
 
 
 
@@ -53,7 +70,11 @@ Actions.sol uses as e.g middleware in silo protocol, meaning if a user calls dep
 
 **Recommendation:**
 
-Consider adding onlyOwner ko call the unitize function to prevent the attacker from hijacking it.
+- Protect the initialize() function with an onlyOwner or initializer modifier.
+
+- Ensure the contract is properly initialized during deployment and can never be re-initialized.
+
+- Consider deploying an upgrade or mitigation if the contract is already vulnerable on mainnet.
 
 
 
@@ -61,7 +82,7 @@ Consider adding onlyOwner ko call the unitize function to prevent the attacker f
 
 **Proof Of Concept (POC)**
 
-The below PoC shows how an attacker called initialize function with malicious siloConfig, fake hook receiver, fake shareToken and malicious vaults, finally the attacker became the owner of the Actions.sol contract.
+The below PoC shows how an attacker called initialize function with malicious siloConfig, fake hook receiver, shareToken and malicious vaults, finally the attacker became the owner of the Actions.sol contract.
 
 ```solidity
 // SPDX-License-Identifier: MIT
