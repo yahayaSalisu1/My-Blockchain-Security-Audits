@@ -1,6 +1,7 @@
 **Contract hijack via unprotected initialize in Actions.sol**
 
 _Bug Severity:_ Critical 
+
 _Target:_ https://sonicscan.org/address/0x435Ab368F5fCCcc71554f4A8ac5F5b922bC4Dc06?utm_source=immunefi#code#F10#L43-53
 Actions.sol uses as e.g middleware in silo protocol, meaning if a user calls deposit/withdraw from silo.sol, the silo.sol will make an external call to Actions.sol, this contract handles multiple tasks such as, calling accrueInterest, turn on/off reentrancy protection, calls hook receiver, gets shareToken and asset addresses, and also the contract interacts with vaults that change the storage, meaning if an attacker can get access or hijack the Actions.sol via calling initialize with malicious siloConfig, fake hook receiver and Change shareToken and asset addresses, all the protocol's transactions will be under the attacker's malicious actions, and could give the Attacker full control over the user's funds
 
@@ -25,6 +26,9 @@ Actions.sol uses as e.g middleware in silo protocol, meaning if a user calls dep
 - After deep reviews, i found out that the silo admins forgot to call initialize in Actions.sol contract, the contract is Unprotected everyone can call it and become the owner of it.
 
 
+
+
+
 **Impact:**
 
 - Attacker could hijack the Actions.sol contract via calling initialize function and change the siloConfig, hook receiver, shareToken and asset addresses all to the malicious ones.
@@ -32,9 +36,17 @@ Actions.sol uses as e.g middleware in silo protocol, meaning if a user calls dep
 - And the attacker could drain the protocol's funds via contract without reentrancy protection
 - Once the attacker became the owner of Actions.sol, the protocol admins can not return the contract back from attacer.
 
+
+
+
+
 **Recommendation:**
 
 Consider adding onlyOwner ko call the unitize function to prevent the attacker from hijacking it.
+
+
+
+
 
 **Proof Of Concept (POC)**
 
