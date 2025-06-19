@@ -12,15 +12,15 @@ _Target:_ https://sonicscan.org/address/0x435Ab368F5fCCcc71554f4A8ac5F5b922bC4Dc
 
 The Actions.sol contract acts as a middleware within the Silo Protocol. When a user interacts with core functions such as deposit or withdraw, the main protocol delegates responsibilities to this contract. This includes critical tasks such as:
 
-Calling accrueInterest()
+- Calling accrueInterest()
 
-Managing reentrancy protection
+- Managing reentrancy protection
 
-Interacting with vaults that handle funds
+- Interacting with vaults that handle funds
 
-Fetching shareToken and asset addresses
+- Fetching shareToken and asset addresses
 
-Managing the hookReceiver
+- Managing the hookReceiver
 
 
 However, the initialize() function in Actions.sol is unprotected. It is publicly callable and lacks any access control (e.g., onlyOwner or initializer modifiers). This allows any attacker to hijack the contract, configure it with a malicious SiloConfig, and gain full control over the logic execution of the entire protocol.
@@ -47,7 +47,6 @@ Furthermore, the contract appears to have never been initialized, which makes th
         return configData.hookReceiver;
     }
 ```
-
 
 
 
@@ -138,3 +137,4 @@ contract SiloActionsInitialize is Test {
 }
 ```
 
+**PoC Output:**
