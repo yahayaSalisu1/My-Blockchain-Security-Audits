@@ -5,8 +5,9 @@
 | [H-03](#h-03-repayBorrowInternal-allows-arbitrary-third-party-to-repay-on-behalf-of-borrower-without-authorization)                                | repayBorrowInternal allows arbitrary third-party to repay on behalf of borrower without authorization                                          |
 | [H-04](#h-04-Supply-Function-Uses-Stale-Exchange-Rate,-Leading-To-Inaccurate-Minting)                             | Supply Function Uses Stale Exchange Rate, Leading to Inaccurate Minting                              |
 | [M-01]
-(#m-01-Redeem-function-does-not-call-accrueInterest,-leading-to-loss-of-user-interests)                 
+(#m-01-Redeem-function-does-not-call-accrueInterest-leading-to-loss-of-user-interests)                 
 | Redeem function does not call accrueInterest, leading to loss of user interests
+|
 
 
 
