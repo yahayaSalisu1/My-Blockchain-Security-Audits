@@ -5,18 +5,22 @@
 | [H-03](#h-03-repayBorrowInternal-allows-arbitrary-third-party-to-repay-on-behalf-of-borrower-without-authorization)                                | repayBorrowInternal allows arbitrary third-party to repay on behalf of borrower without authorization                                          |
 | [H-04](#h-04-Supply-Function-Uses-Stale-Exchange-Rate,-Leading-To-Inaccurate-Minting)                             | Supply Function Uses Stale Exchange Rate, Leading to Inaccurate Minting                              |
 | [M-01](#m-01-Redeem-function-does-not-call-accrueInterest-leading-to-loss-of-user-interests)                 
-| Redeem function does not call accrueInterest, leading to loss of user interests
+|Redeem function does not call accrueInterest, leading to loss of user interests
+
+
+———
 
 
 
-### [H-01] A user can borrow amount beyond collateral limit in borrow function 
+## [H-01] A user can borrow amount beyond collateral limit in borrow function 
 
 
 _Target:_
 https://github.com/sherlock-audit/2025-05-lend-audit-contest/blob/main/Lend-V2%2Fsrc%2FLayerZero%2FCoreRouter.sol#L145
  
 
-**Summary:**
+
+### Summary:
 
 The borrow function is used to borrow debt from the protocol, and the function does not check borrowed and collateral properly, the require checks preBorrowAmount ( currentBorrowBalance ) instead of postBorrowAmount ( currentBorrowBalance + _amount ) this will allow borrowers to borrow debt more than their collateral
 
@@ -46,7 +50,8 @@ The borrow function is used to borrow debt from the protocol, and the function d
 
 
 
-**Vulnerability Details:**
+
+### Description:
 
 A. A User deposited $1000 for example, and the collateral factor (LTV) is 0.8e18 (80%), that means the User has a chance to borrow $800
 
@@ -62,7 +67,8 @@ F. The borrower has received $400, while his currentBorrowBalance is $500. that 
 
 
 
-**Impact:**
+
+### Impact:
 
 - Loss of protocol and Liquidators funds because the user's collateral can not pay the debt
 
@@ -72,7 +78,8 @@ F. The borrower has received $400, while his currentBorrowBalance is $500. that 
 
 
 
-**Recommendation:**
+
+### Recommendation:
 
 Change borrowAmount in require
 
@@ -88,7 +95,8 @@ require(collateral >= borrowed, "Insufficient collateral");
 // borrowed = currentBorrowBalance + _amount e.g $500 + $400 = $900.
 ```
 
-**Proof of concept (PoC):**
+
+### Proof of concept (PoC):
 
 The below PoC shows how a user deposited 1000 USDC and borrow 500 USDC first, then re-borrow 400 USDC even though the collateral factor (LTV) is 80% which is 800 USDC.
 
@@ -126,12 +134,14 @@ import {IERC20} from "../src/interfaces/IERC20.sol";
 }
 ```
 
+
 **PoC OutPut**
 
 ![PoC Output](https://github.com/user-attachments/assets/38c81c75-7017-48b6-8d54-b24e8a9df4bc)
 
 
----
+
+———
 
 
 ### [H-02] Over-repayment possible in repayBorrow due to missing upper bound check on _amount
