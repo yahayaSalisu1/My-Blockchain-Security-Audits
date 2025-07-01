@@ -4,10 +4,8 @@
 | [H-02](#h-02-Over-repayment-possible-in-repayBorrow-due-to-missing-upper-bound-check-on-_amount)                              | Over-repayment possible in repayBorrow due to missing upper bound check on _amount                              |
 | [H-03](#h-03-repayBorrowInternal-allows-arbitrary-third-party-to-repay-on-behalf-of-borrower-without-authorization)                                | repayBorrowInternal allows arbitrary third-party to repay on behalf of borrower without authorization                                          |
 | [H-04](#h-04-Supply-Function-Uses-Stale-Exchange-Rate,-Leading-To-Inaccurate-Minting)                             | Supply Function Uses Stale Exchange Rate, Leading to Inaccurate Minting                              |
-| [M-01]
-(#m-01-Redeem-function-does-not-call-accrueInterest-leading-to-loss-of-user-interests)                 
+| [M-01](#m-01-Redeem-function-does-not-call-accrueInterest-leading-to-loss-of-user-interests)                 
 | Redeem function does not call accrueInterest, leading to loss of user interests
-|
 
 
 
@@ -503,7 +501,7 @@ function test_supply1() public {
 
 ---
 
-### [M-01] Redeem function does not call accrueInterest, leading to loss of user interests
+### [M-01] Redeem function does not call accrueInterest leading to loss of user interests
 
 
 _Target:_ (https://github.com/sherlock-audit/2025-05-lend-audit-contest/blob/main/Lend-V2%2Fsrc%2FLayerZero%2FCoreRouter.sol#L100)
