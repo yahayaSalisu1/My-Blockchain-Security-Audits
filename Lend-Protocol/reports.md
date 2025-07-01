@@ -1,10 +1,11 @@
 | ID                                                                                                               | Title                                                                                                        |
 | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| [H-01](#H-01-A-user-can-borrow-amount-beyond-his- collateral-limit-in-borrow-function)                       | A user can borrow amount beyond collateral limit in borrow function                                |
+| [H-01](#h-01-A-user-can-borrow-amount-beyond-his- collateral-limit-in-borrow-function)                       | A user can borrow amount beyond collateral limit in borrow function                                |
 | [H-02](#h-02-Over-repayment-possible-in-repayBorrow-due-to-missing-upper-bound-check-on-_amount)                              | Over-repayment possible in repayBorrow due to missing upper bound check on _amount                              |
 | [H-03](#h-03-repayBorrowInternal-allows-arbitrary-third-party-to-repay-on-behalf-of-borrower-without-authorization)                                | repayBorrowInternal allows arbitrary third-party to repay on behalf of borrower without authorization                                          |
 | [H-04](#h-04-Supply-Function-Uses-Stale-Exchange Rate,-Leading-To-Inaccurate-Minting)                             | Supply Function Uses Stale Exchange Rate, Leading to Inaccurate Minting                              |
-| [M-01](#m-01-Redeem-function-does-not-call accrueInterest,-leading-to-loss-of-user interests)                 
+| [M-01]
+(#m-01-Redeem-function-does-not-call accrueInterest,-leading-to-loss-of-user interests)                 
 | Redeem function does not call accrueInterest, leading to loss of user interests                                     
 |
 
