@@ -1,6 +1,17 @@
-### [H-01] A user can borrow amount beyond collateral limit in Lend-Protocol
+| ID                                                                                                               | Title                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| [H-01](#H-01-A-user-can-borrow-amount-beyond-his- collateral-limit-in-borrow-function)                       | A user can borrow amount beyond collateral limit in borrow function                                |
+| [H-02](#h-02-Over-repayment-possible-in-repayBorrow-due-to-missing-upper-bound-check-on-_amount)                              | Over-repayment possible in repayBorrow due to missing upper bound check on _amount                              |
+| [H-03](#h-03-repayBorrowInternal-allows-arbitrary-third-party-to-repay-on-behalf-of-borrower-without-authorization)                                | repayBorrowInternal allows arbitrary third-party to repay on behalf of borrower without authorization                                          |
+| [H-04](#h-04-Supply-Function-Uses-Stale-Exchange Rate,-Leading-To-Inaccurate-Minting)                             | Supply Function Uses Stale Exchange Rate, Leading to Inaccurate Minting                              |
+| [M-01](#m-01-Redeem-function-does-not-call accrueInterest,-leading-to-loss-of-user interests)                 
+| Redeem function does not call accrueInterest, leading to loss of user interests                                     
+|
 
-_Bug Severity: High_
+
+
+### [H-01] A user can borrow amount beyond collateral limit in borrow function 
+
 
 _Target:_
 https://github.com/sherlock-audit/2025-05-lend-audit-contest/blob/main/Lend-V2%2Fsrc%2FLayerZero%2FCoreRouter.sol#L145
@@ -120,12 +131,12 @@ import {IERC20} from "../src/interfaces/IERC20.sol";
 
 ![PoC Output](https://github.com/user-attachments/assets/38c81c75-7017-48b6-8d54-b24e8a9df4bc)
 
+
 ---
 
 
 ### [H-02] Over-repayment possible in repayBorrow due to missing upper bound check on _amount
 
-_Bug Severity:_ High
 
 _Target:_
 
@@ -236,7 +247,6 @@ function testOverRepayment() public {
 
 ### [H-03] repayBorrowInternal allows arbitrary third-party to repay on behalf of borrower without authorization
 
-_Bug Severity:_ High 
 
 _Target:_ https://github.com/sherlock-audit/2025-05-lend-audit-contest/blob/main/Lend-V2%2Fsrc%2FLayerZero%2FCoreRouter.sol#L459
 
@@ -352,11 +362,12 @@ vm.startPrank(borrower);
 **PoC Output:**
 ![PoC](https://github.com/user-attachments/assets/171deb23-f349-4cd8-af7f-999e0e959fb2)
 
+
 ---
+
 
 ### [H-04]Supply Function Uses Stale Exchange Rate, Leading to Inaccurate Minting
 
-_Bug Severity:_ High
 
 _Target:_ https://github.com/sherlock-audit/2025-05-lend-audit-contest/blob/main/Lend-V2%2Fsrc%2FLayerZero%2FCoreRouter.sol#L61
 
@@ -488,11 +499,11 @@ function test_supply1() public {
 **PoC OutPut:**
 ![PoC](https://github.com/user-attachments/assets/be3e499b-305e-4aab-9303-1a1c5aca5dff)
 
+
 ---
 
 ### [M-01] Redeem function does not call accrueInterest, leading to loss of user interests
 
-_Bug Severity:_ Medium 
 
 _Target:_ (https://github.com/sherlock-audit/2025-05-lend-audit-contest/blob/main/Lend-V2%2Fsrc%2FLayerZero%2FCoreRouter.sol#L100)
 
