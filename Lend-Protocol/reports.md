@@ -78,24 +78,6 @@ F. The borrower has received $400, while his currentBorrowBalance is $500. that 
 
 
 
-
-### Recommendation:
-
-Change borrowAmount in require
-
-```solidity
-
-// from this
-require(collateral >= borrowAmount, "Insufficient collateral");
-
-// to this
-require(collateral >= borrowed, "Insufficient collateral");
-
-// borrowAmount = currentBorrowBalance e.g $500
-// borrowed = currentBorrowBalance + _amount e.g $500 + $400 = $900.
-```
-
-
 ### Proof of concept (PoC):
 
 The below PoC shows how a user deposited 1000 USDC and borrow 500 USDC first, then re-borrow 400 USDC even though the collateral factor (LTV) is 80% which is 800 USDC.
@@ -135,22 +117,40 @@ import {IERC20} from "../src/interfaces/IERC20.sol";
 ```
 
 
-**PoC OutPut**
+### Output:
 
 ![PoC Output](https://github.com/user-attachments/assets/38c81c75-7017-48b6-8d54-b24e8a9df4bc)
 
 
 
+### Recommendation:
+
+Change borrowAmount in require
+
+```solidity
+
+// from this
+require(collateral >= borrowAmount, "Insufficient collateral");
+
+// to this
+require(collateral >= borrowed, "Insufficient collateral");
+
+// borrowAmount = currentBorrowBalance e.g $500
+// borrowed = currentBorrowBalance + _amount e.g $500 + $400 = $900.
+```
+
+
 ___
 
 
-### [H-02] Over-repayment possible in repayBorrow due to missing upper bound check on _amount
+## [H-02] Over-repayment possible in repayBorrow due to missing upper bound check on _amount
 
 
 _Target:_
 
 
-**Summary:**
+
+### Summary:
 
 The repayBorrow function attempts to handle both full and partial repayments. If a user supplies _amount == type(uint256).max, the contract assumes full repayment and uses borrowedAmount as the repay amount. However, when _amount is a specific value, there is no upper bound check to ensure it is not greater than borrowedAmount, allowing over-repayment.
 
@@ -165,7 +165,8 @@ function repayBorrowInternal(address borrower, address liquidator, uint256 _amou
 When _amount is explicitly specified (i.e., not type(uint256).max), the contract will proceed to transfer _amount without checking if it exceeds the actual debt (borrowedAmount). This can lead to scenarios where users accidentally or unknowingly over-repay beyond what they owe.
 
 
-**Vulnerability Details:**
+
+### Description:
 
 - A user borrows 1000e18.
 - Later, the user wants to repay by calling `repayBorrowInternal()`.
@@ -173,7 +174,8 @@ When _amount is explicitly specified (i.e., not type(uint256).max), the contract
 - But if the user provides a specific `_amount`, **even if greater than the debt**, the contract proceeds to transfer `_amount` instead of capping at `borrowedAmount`.
 
 
-**Impact:**
+
+### Impact:
 
 - Users may over-repay and lose funds permanently.
 - The protocol will unjustly collect tokens it is not entitled to.
@@ -181,22 +183,9 @@ When _amount is explicitly specified (i.e., not type(uint256).max), the contract
 - May be exploited in MEV/front-running scenarios where users are tricked into over-repaying.
 
 
-**Recommendation**
-
-The require should also ensure that the _amount <= borrowedAmount.
-
-```solidity
-uint256 repayAmountFinal = _amount == type(uint256).max ? borrowedAmount : _amount > borrowedAmount ? borrowedAmount : _amount;
-
-// Or add a require:
-
-require(_amount <= borrowedAmount, "Cannot repay more than owed");
-```
-
-This will check if the _amount > borrowAmount, and if so, the protocol will transfer borrowAmount only, or it will revert ( if you use require ).
 
 
-**Proof of concept (PoC)**
+### Proof of concept (PoC)
 
 The below PoC shows how the borrower borrowed 1_000e18 and later repaid 10_000e18, meaning that the user directly lost 9_000e18
 
@@ -247,27 +236,46 @@ function testOverRepayment() public {
 }
 ```
 
-**PoC Output:**
+### Output:
 
 ![PoC](https://github.com/user-attachments/assets/f7221988-244e-42e7-af3c-d5f0ad7c2285)
+
+
+
+
+### Recommendation:
+
+The require should also ensure that the _amount <= borrowedAmount.
+
+```solidity
+uint256 repayAmountFinal = _amount == type(uint256).max ? borrowedAmount : _amount > borrowedAmount ? borrowedAmount : _amount;
+
+// Or add a require:
+
+require(_amount <= borrowedAmount, "Cannot repay more than owed");
+```
+
+This will check if the _amount > borrowAmount, and if so, the protocol will transfer borrowAmount only, or it will revert ( if you use require ).
+
+
 
 ---
 
 
-### [H-03] repayBorrowInternal allows arbitrary third-party to repay on behalf of borrower without authorization
+## [H-03] repayBorrowInternal allows arbitrary third-party to repay on behalf of borrower without authorization
 
 
 _Target:_ https://github.com/sherlock-audit/2025-05-lend-audit-contest/blob/main/Lend-V2%2Fsrc%2FLayerZero%2FCoreRouter.sol#L459
 
 
-**Summary:**
+### Summary:
 
 The repayBorrow in a LEND protocol has incorrect transferFrom parameter, the function uses an improper transferFrom that unintentionally deducts funds from the liquidator even when the borrower calls repayBorrow.
 
 
 
 
-**Vulnerability Details:**
+### Description:
 
 If a user borrows from the protocol, and later calls repayBorrow, the function does not deduct the funds from the borrower, but it charges any liquidator that approve allowance to the protocol, and updates the borrower's balance while borrower does not pay anything from his debt
 
@@ -294,30 +302,14 @@ function repayBorrowInternal(address borrower, address liquidator, uint256 _amou
 
 
 
-**Impact:**
+### Impact:
 
 - Liquidators will always be charged for debt they never borrowed.
 - Actual borrowers will get free debt, because when they borrowed the debts and wanted to repay, the protocol will not charges them, instead, the protocol will deduct the Amount from liquiditors and also update the borrower's balance.
 
 
 
-
-**Recommendation**
-
-```solidity
-// coreRouter.sol
-
-function repayBorrowInternal(address borrower, address liquidator, uint256 _amount, address _lToken, bool _isSameChain) internal {
-     
-     ... existing code ....
-
-    // Tokens transferFrom borrower to the contract
-@audit-fix--> IERC20(_token).safeTransferFrom(msg.sender, address(this), repayAmountFinal);
-```
-
-
-
-**Proof of concept (PoC)**
+### Proof of concept (PoC)
 
 The below PoC shows how a User borrowed 1_000e18, and later wanted to repay, then he calls repayBorrow, but the repayBorrow function didn't charge the amount from borrower but from a liquiditor, and after debt is cleared, the borrower's balance is still the same.
 
@@ -368,20 +360,34 @@ vm.startPrank(borrower);
     }
 ```
 
-**PoC Output:**
+### Output:
 ![PoC](https://github.com/user-attachments/assets/171deb23-f349-4cd8-af7f-999e0e959fb2)
+
+
+### Recommendation:
+
+```solidity
+// coreRouter.sol
+
+function repayBorrowInternal(address borrower, address liquidator, uint256 _amount, address _lToken, bool _isSameChain) internal {
+     
+     ... existing code ....
+
+    // Tokens transferFrom borrower to the contract
+@audit-fix--> IERC20(_token).safeTransferFrom(msg.sender, address(this), repayAmountFinal);
+```
 
 
 ---
 
 
-### [H-04]Supply Function Uses Stale Exchange Rate, Leading to Inaccurate Minting
+## [H-04]Supply Function Uses Stale Exchange Rate, Leading to Inaccurate Minting
 
 
 _Target:_ https://github.com/sherlock-audit/2025-05-lend-audit-contest/blob/main/Lend-V2%2Fsrc%2FLayerZero%2FCoreRouter.sol#L61
 
 
-**Summary:**
+### Summary:
 
 - The supply() function fails to call accrueInterest() before relying on exchangeRateStored() for price data.
 
@@ -434,13 +440,13 @@ function supply(uint256 _amount, address _token) external {
 ```
 
 
-**Venerability Details:**
+### Description:
 
 This leads to miscalculation in the number of lTokens minted for the user, creating an inconsistent accounting between real-time token value and actual supply.
 
 
 
-**Impact:**
+### Impact:
 
 - In edge cases, this could allow:
 
@@ -450,15 +456,8 @@ This leads to miscalculation in the number of lTokens minted for the user, creat
 
 
 
-**Recommendation:**
 
-Replace exchangeRateStored() with a call to exchangeRateCurrent() or manually call accrueInterest() before reading the exchange rate.
-
-This ensures that minting calculations use the latest, interest-accrued exchange rate.
-
-
-
-**Proof of concept (PoC)**
+### Proof of concept (PoC)
 
 The below PoC shows how supply uses stale price in different time of supplying...
 
@@ -509,15 +508,25 @@ function test_supply1() public {
 ![PoC](https://github.com/user-attachments/assets/be3e499b-305e-4aab-9303-1a1c5aca5dff)
 
 
+### Recommendation:
+
+Replace exchangeRateStored() with a call to exchangeRateCurrent() or manually call accrueInterest() before reading the exchange rate.
+
+This ensures that minting calculations use the latest, interest-accrued exchange rate.
+
+
+
 ---
 
-### [M-01] Redeem function does not call accrueInterest leading to loss of user interests
+
+## [M-01] Redeem function does not call accrueInterest leading to loss of user interests
 
 
 _Target:_ (https://github.com/sherlock-audit/2025-05-lend-audit-contest/blob/main/Lend-V2%2Fsrc%2FLayerZero%2FCoreRouter.sol#L100)
 
 
-**Summary:**
+
+### Summary:
 
 Rdeem function fails to call accrueInterest entirely, this could result in loss of users interests because whenever the users tried to redeem their LToken to underlying asset, the redeem function will not accumulate the interests, meaning that the users will receive exact their principal amount without interests.
 
@@ -574,7 +583,7 @@ function redeem(uint256 _amount, address payable _lToken) external returns (uint
 
 
 
-**Venerability Details:**
+### Description:
 
 - If a user supplied 1_000e6 USDC for example, after 30 days the user wants to redeem/withdraw his token, the protocol will proceed only exact amount the user supplied without accumulating interest.
 
@@ -587,34 +596,8 @@ function redeem(uint256 _amount, address payable _lToken) external returns (uint
 
 
 
-**Recommendation:**
 
-- For missing accrueInterest
-
-```solidity
-function redeem(uint256 _amount, address payable _lToken) external returns (uint256) {
-        // Redeem lTokens
-        address _token = lendStorage.lTokenToUnderlying(_lToken);
-
-@audit-fix--> LTokenInterface(_lToken).accrueInterest(); // add this.
-
-       require(_amount > 0, "Zero redeem amount");
-
-```
-
-- For calculating expected underlying
-
-```solidity
-// use exchangeRateCurrent() instead
-uint256 exchangeRateBefore = LTokenInterface(_lToken).exchangeRateStored();
-
-// like this
-uint256 exchangeRateBefore = LTokenInterface(_lToken). exchangeRateCurrent();
-```
-
-
-
-**Proof of concept (PoC)**
+### Proof of concept (PoC)
 
 The below PoC shows how a user supplied 10_000e6 USDC, after 30 days redeems all of the token and received exact amount he supplied (principal amount) without interest.
 
@@ -650,5 +633,32 @@ The below PoC shows how a user supplied 10_000e6 USDC, after 30 days redeems all
     }
 ```
 
-**PoC Output:**
+
+
+### Output:
 ![PoC](https://github.com/user-attachments/assets/8c02d364-3588-4764-8020-f72780ddcd81)
+
+
+
+### Recommendation:
+- For missing accrueInterest
+
+```solidity
+function redeem(uint256 _amount, address payable _lToken) external returns (uint256) {
+        // Redeem lTokens
+        address _token = lendStorage.lTokenToUnderlying(_lToken);
+
+@audit-fix--> LTokenInterface(_lToken).accrueInterest(); // add this.
+
+       require(_amount > 0, "Zero redeem amount");
+```
+
+- For calculating expected underlying
+
+```solidity
+// use exchangeRateCurrent() instead
+uint256 exchangeRateBefore = LTokenInterface(_lToken).exchangeRateStored();
+
+// like this
+uint256 exchangeRateBefore = LTokenInterface(_lToken). exchangeRateCurrent();
+```
