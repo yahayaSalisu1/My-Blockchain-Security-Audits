@@ -3,11 +3,15 @@
 | [L-01](#l-01-Missing-zero-amount-protection-may-lead-to-gas-wastage-or-unexpected-executor-calls)                       |  Missing zero-amount protection may lead to gas wastage or unexpected executor calls.                               |
 | [L-02](l-02-Missing-zero-swap-check-may-lead-to-gas-wastage-or-unexpected-executor-calls)                              | Missing zero-swap check may lead to gas wastage or unexpected executor calls
 
+
+
 ### [L-01] Missing zero-amount protection may lead to gas wastage or unexpected executor calls.
+
+Yahaya Salisu.
 
 _Severity:_ Low
 
-_Target:_ https://github.com/sherlock-audit/2025-07-debank/blob/main/swap-router-v1%2Fsrc%2Frouter%2FRouter.sol#L56-L100
+_Source:_ https://github.com/sherlock-audit/2025-07-debank/blob/main/swap-router-v1%2Fsrc%2Frouter%2FRouter.sol#L56-L100
 
 #### Summary:
 
@@ -56,11 +60,13 @@ Place the check before any fee logic or external calls (especially transferFrom 
 ### Tools Used:
 Manual Code review.
 
+
 ---
+
+
 
 ### [L-02] Missing zero-swap check may lead to gas wastage or unexpected executor calls
 
-Yahaya Salisu.
 
 _Severity:_ Low
 
